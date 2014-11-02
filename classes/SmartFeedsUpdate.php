@@ -5,6 +5,12 @@ class SmartFeedsUpdate {
     protected $table_name = 'plugin_smartfeedsupdate';
     protected $slots = array( 5, 30, 60, 480, 9999 );
 
+    protected function getFeeds() {
+        $feeds_manager = new Feed();
+
+        return $feeds_manager->loadAllOnlyColumn( 'id', null );
+    }
+
     public function install() {
 
         mysql_query(
