@@ -35,7 +35,18 @@ function add_synchro_option( $synchronisationType ) {
         '</p>';
 }
 
+function get_feeds( &$synchronisation_custom, &$commandLine, $configurationManager, $start ) {
+    $synchronisation_custom['no_normal_synchronize'] = true;
+
+    require_once( __DIR__ . "/classes/SmartFeedsUpdateFeeds.php" );
+    require_once( __DIR__ . "/classes/ExtendedFeed.php" );
+
+    $update_feeds = new SmartFeedsUpdateFeeds();
+    $update_feeds->updateFeeds( $commandLine, $configurationManager, $start );
+}
+
 Plugin::addHook( "setting_post_synchronisation_options", "add_synchro_option" );
+Plugin::addHook( "action_before_synchronisationtype", "get_feeds" );
 
 
 ?>

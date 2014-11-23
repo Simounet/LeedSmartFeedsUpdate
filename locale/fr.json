@@ -1,4 +1,5 @@
 {
  "SMARTFEEDUPDATE_SMART": "Malin",
- "SMARTFEEDUPDATE_SMART_DESC": "La mise à jour des flux s'effectuera en fonction de la fréquence de leurs publications. Pour utiliser ce type de synchronisation, il est recommandé de lancer le cron fréquemment (toutes les 4 minutes). Et ça, c'est <a href=\"http://fr.wikipedia.org/wiki/Cyril_Lignac\">malin</a> !"
+ "SMARTFEEDUPDATE_SMART_DESC": "La mise à jour des flux s'effectuera en fonction de la fréquence de leurs publications. Pour utiliser ce type de synchronisation, il est recommandé de lancer le cron fréquemment (toutes les 4 minutes). Et ça, c'est <a href=\"http://fr.wikipedia.org/wiki/Cyril_Lignac\">malin</a> !",
+ "SMARTFEEDUPDATE_NO_FEED_TO_UPDATE": "Aucun flux à mettre à jour."
 }

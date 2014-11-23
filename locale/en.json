@@ -1,4 +1,5 @@
 {
  "SMARTFEEDUPDATE_SMART": "Smart",
- "SMARTFEEDUPDATE_SMART_DESC": "The update will process feeds depending on their publication's frequency. To use this type of synchronization, we recommend to launch the cron frequently (every 4 minutes)."
+ "SMARTFEEDUPDATE_SMART_DESC": "The update will process feeds depending on their publication's frequency. To use this type of synchronization, we recommend to launch the cron frequently (every 4 minutes).",
+ "SMARTFEEDUPDATE_NO_FEED_TO_UPDATE": "No feed to update."
 }
