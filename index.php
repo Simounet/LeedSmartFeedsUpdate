@@ -19,7 +19,7 @@ switch( $action ) {
         $smart_update->updateFrequencies();
         break;
     case 'default':
-        echo 'No action detected.';
+        echo _t( 'SMARTFEEDUPDATE_NO_ACTION_DETECTED' );
         break;
 }
 
