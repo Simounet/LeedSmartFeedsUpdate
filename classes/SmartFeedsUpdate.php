@@ -17,7 +17,8 @@ class SmartFeedsUpdate {
             'CREATE TABLE IF NOT EXISTS `' . MYSQL_PREFIX . $this->table_name . '` (
                 `slot` int(11) NOT NULL,
                 `feeds` varchar(255),
-                `nextupdate` int(10) NOT NULL DEFAULT 0
+                `nextupdate` int(10) NOT NULL DEFAULT 0,
+                PRIMARY KEY (`slot`)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;'
         );
 
