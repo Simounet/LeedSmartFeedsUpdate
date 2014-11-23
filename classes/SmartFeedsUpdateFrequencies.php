@@ -13,7 +13,7 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
             $feed_frequencies = $this->getLastFrequencies( $feed );
 
             if( $feed_frequencies ) {
-                $feeds_frequencies[$feed->getId()] = $this->intervalMin( $feed_frequencies );
+                $feeds_frequencies[$feed->getId()] = $this->eventsIntervalAverage( $feed_frequencies );
             }
 
         }
@@ -67,9 +67,10 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
      * Tools
      */
 
-    protected function intervalMin( array $dates ){
+    protected function eventsIntervalAverage( array $dates ){
+        array_unshift( $dates,  time() );
         $intervals = array();
-     
+
         foreach( $dates as $key => $date ) {
 
             if( isset( $dates[$key+1] ) ) {
@@ -78,9 +79,9 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
      
         }
 
-        // Return the minimum interval in minutes
-        return min( $intervals ) / 60;
-     
+        $average = array_sum( $intervals ) / count( $intervals );
+
+        return $average / 60;
     }
 
 }
