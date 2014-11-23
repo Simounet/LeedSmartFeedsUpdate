@@ -2,7 +2,7 @@
 
 class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
 
-    protected $events_limit = 3;
+    protected $events_limit = 4;
 
     public function updateFrequencies() {
         // Get all feeds
