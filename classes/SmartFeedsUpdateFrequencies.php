@@ -6,7 +6,7 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
 
     public function updateFrequencies() {
         // Get all feeds
-        $feeds = $this->getFeeds();
+        $feeds = $this->getAllFeeds();
 
         foreach( $feeds as $feed ) {
 
@@ -18,7 +18,7 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
 
         }
 
-        $frequencies = $this->sortFrequencies( $feeds_frequencies );
+        $frequencies = $this->sortFrequenciesArray( $feeds_frequencies );
         if( ! $this->saveFrequencies( $frequencies ) ) {
             echo 'Frequencies were not saved.';
         }
@@ -40,14 +40,14 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
     }
 
 
-    protected function sortFrequencies( $feeds_frequencies ) {
+    protected function sortFrequenciesArray( $feeds_frequencies ) {
         asort( $feeds_frequencies );
 
         // Loop on each feed
         foreach( $feeds_frequencies as $feed_id => $feed_frequency ) {
 
             // Check for each slot
-            foreach( $this->slots as $slot_limit ) {
+            foreach( $this->slots_default as $slot_limit ) {
 
                 if( $feed_frequency != 0
                 AND $feed_frequency <=  $slot_limit ) {
@@ -61,25 +61,6 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
 
         return $frequencies;
 
-    }
-
-    protected function saveFrequencies( $frequencies ) {
-
-        $query = 'UPDATE ' . MYSQL_PREFIX . $this->table_name
-                . ' SET `feeds`= CASE `id` ';
-
-        foreach( $frequencies as $id => $frequency ) {
-            $query .= "WHEN '$id' THEN '" . json_encode( $frequency ). "' ";
-        }
-
-        $query .= 'END;';
-
-        $result = mysql_query( $query );
-        if( $result === false ) {
-            throw new Exception(mysql_error());
-        }
-
-        return $result;
     }
 
     /**
