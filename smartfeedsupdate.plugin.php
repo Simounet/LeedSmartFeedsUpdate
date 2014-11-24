@@ -12,7 +12,8 @@
 require_once( __DIR__ . "/classes/SmartFeedsUpdate.php" );
 
 function add_synchro_option( $synchronisationType ) {
-    $identifier = 'smartupdate';
+    $update = new SmartFeedsUpdate();
+    $identifier = $update->sync_type_name;
 
     $checked = false;
     if( $synchronisationType == $identifier ) {
@@ -35,14 +36,16 @@ function add_synchro_option( $synchronisationType ) {
         '</p>';
 }
 
-function get_feeds( &$synchronisation_custom, &$commandLine, $configurationManager, $start ) {
-    $synchronisation_custom['no_normal_synchronize'] = true;
-
+function get_feeds( &$synchronisation_custom, &$synchronisationType, &$commandLine, $configurationManager, $start ) {
     require_once( __DIR__ . "/classes/SmartFeedsUpdateFeeds.php" );
-    require_once( __DIR__ . "/classes/ExtendedFeed.php" );
-
     $update_feeds = new SmartFeedsUpdateFeeds();
-    $update_feeds->updateFeeds( $commandLine, $configurationManager, $start );
+
+    if( $synchronisationType == $update_feeds->sync_type_name ) {
+        $synchronisation_custom['no_normal_synchronize'] = true;
+
+        require_once( __DIR__ . "/classes/ExtendedFeed.php" );
+        $update_feeds->updateFeeds( $commandLine, $configurationManager, $start );
+    }
 }
 
 Plugin::addHook( "setting_post_synchronisation_options", "add_synchro_option" );
