@@ -5,7 +5,7 @@ class SmartFeedsUpdate extends MysqlEntity {
     public $sync_type_name = 'smartfeedsupdate';
 
     protected $TABLE_NAME = 'plugin_smartfeedsupdate';
-    protected $slots_default = array( 5, 30, 60, 480, 9999 );
+    protected $slots_default = array( 5, 10, 20, 30, 60, 120, 480, 1440 );
 
     protected
         $slot,
