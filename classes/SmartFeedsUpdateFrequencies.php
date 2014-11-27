@@ -2,7 +2,7 @@
 
 class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
 
-    protected $events_limit = 4;
+    protected $events_limit = 10;
 
     public function updateFrequencies() {
         // Get all feeds
@@ -68,7 +68,6 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
      */
 
     protected function eventsIntervalAverage( array $dates ){
-        array_unshift( $dates,  time() );
         $intervals = array();
 
         foreach( $dates as $key => $date ) {
@@ -80,8 +79,17 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
         }
 
         $average = array_sum( $intervals ) / count( $intervals );
+        $min = min( $intervals );
+        $coeff_min = 2;
+        $coeff_average = 1;
 
-        return $average / 60;
+        $result =
+            $average === 0 ?
+            60*60*24
+            :
+            ( $coeff_average*$average + $coeff_min*$min ) / ( $coeff_average + $coeff_min );
+
+        return $result / 60;
     }
 
 }
