@@ -5,7 +5,8 @@ class SmartFeedsUpdate extends MysqlEntity {
     public $sync_type_name = 'smartfeedsupdate';
 
     protected $TABLE_NAME = 'plugin_smartfeedsupdate';
-    protected $slots_default = array( 5, 10, 20, 30, 60, 120, 480, 1440 );
+    protected $CLASS_NAME = 'SmartFeedsUpdate';
+    public $slots_default = array( 5, 10, 20, 30, 60, 120, 480, 1440 );
 
     protected
         $slot,
@@ -50,11 +51,11 @@ class SmartFeedsUpdate extends MysqlEntity {
         parent::save( $id_field );
     }
 
-    protected function setFeedIdList( array $feed_ids ) {
-        return json_encode( $feed_ids );
+    protected function getFeedIdListJson( array $feed_ids ) {
+        return json_encode( array_values( $feed_ids ) );
     }
 
-    protected function getFeedIdList() {
+    protected function getFeedIdListString() {
         $feed_id_list = json_decode( $this->getFeeds() );
 
         if( ! empty( $feed_id_list ) ) {
@@ -64,7 +65,11 @@ class SmartFeedsUpdate extends MysqlEntity {
         return false;
     }
 
-    protected function saveFrequencies( $frequencies ) {
+    public function getFeedIdArray() {
+        return json_decode( $this->getFeeds() );
+    }
+
+    protected function saveAllFrequencies( $frequencies ) {
 
         $query = 'UPDATE ' . MYSQL_PREFIX . $this->TABLE_NAME
                 . ' SET `feeds`= CASE `slot` ';
@@ -78,7 +83,7 @@ class SmartFeedsUpdate extends MysqlEntity {
 
             $query .=
                 'WHEN ' . $slot_nb . ' ' .
-                'THEN "' . $this->setFeedIdList( $values ) . '" ';
+                'THEN "' . $this->getFeedIdListJson( $values ) . '" ';
         }
 
         $query .= 'END;';
@@ -91,10 +96,82 @@ class SmartFeedsUpdate extends MysqlEntity {
         return $result;
     }
 
+    protected function saveFrequency() {
+        $query = 'UPDATE ' . MYSQL_PREFIX . $this->TABLE_NAME . ' ' .
+                 'SET `feeds`="' . $this->getFeeds() . '" ' .
+                 'WHERE `slot`=' . $this->getSlot() . ';';
+
+        $result = mysql_query( $query );
+        if( $result === false ) {
+            throw new Exception(mysql_error());
+        }
+
+    }
+
     protected function getAllFeeds() {
         $feeds_manager = new Feed();
 
-        return $feeds_manager->loadAllOnlyColumn( 'id', null );
+        return $feeds_manager->loadAllOnlyColumn( 'id, name', null );
+    }
+
+    public function updateFeed( $feed_id, $previous_slot, $new_slot ) {
+        $feed_id = (int)$feed_id;
+        $slot = $this->load( array( 'slot' => $previous_slot ) );
+        $slot->removeFeedToSlot( $feed_id );
+
+        $slot = $this->load( array( 'slot' => $new_slot ) );
+        $slot->addFeedToSlot( $feed_id );
+echo '<pre>' . print_r( $slot, true ) . '</pre>';
+    }
+
+    protected function addFeedToSlot( $feed_id ) {
+        $feeds_ids = array();
+        $feeds_ids = $this->getFeedIdArray();
+
+        $feeds_ids[] = $feed_id;
+        asort( $feeds_ids );
+        
+        $this->setFeeds( $this->getFeedIdListJson( $feeds_ids ) );
+        $this->saveFrequency();
+    }
+
+    protected function removeFeedToSlot( $feed_id ) {
+        $feeds_ids = array();
+        $feeds_ids = $this->getFeedIdArray();
+
+        $feed_id_position = array_search( $feed_id, $feeds_ids );
+        if( ! is_numeric( $feed_id_position ) ) {
+            echo 'The feed ' . $feed_id . ' was not in the slot ' . $this->getSlot() . '.';
+            return false;
+        }
+
+        unset( $feeds_ids[$feed_id_position] );
+
+        $this->setFeeds( $this->getFeedIdListJson( $feeds_ids ) );
+        $this->saveFrequency();
+    }
+
+    public function getNiceSlotIdString( $slot_id ) {
+        $day = 60*24;
+        $hour = 60;
+
+        if( $slot_id < $hour ) {
+            return $slot_id . ' ' . _t( $this->singularOrPluralTranslation( $slot_id, 'SMARTFEEDSUPDATE_MN' ) );
+        } elseif( $slot_id < $day ) {
+            $nb = $slot_id/60;
+            return $nb . ' ' . _t( $this->singularOrPluralTranslation( $nb, 'SMARTFEEDSUPDATE_HOUR' ) );
+        } else {
+            $nb = $slot_id/60/24;
+            return $nb . ' ' . _t( $this->singularOrPluralTranslation( $nb, 'SMARTFEEDSUPDATE_DAY' ) );
+        }
+    }
+
+    protected function singularOrPluralTranslation( $nb, $str ) {
+        if( $nb == 1 ) {
+            return $str;
+        }
+
+        return $str . 'S';
     }
 
     public function install() {

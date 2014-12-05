@@ -5,7 +5,6 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
     protected $events_limit = 10;
 
     public function updateFrequencies() {
-        // Get all feeds
         $feeds = $this->getAllFeeds();
 
         foreach( $feeds as $feed ) {

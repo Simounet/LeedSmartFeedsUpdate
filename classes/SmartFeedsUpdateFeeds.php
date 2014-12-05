@@ -16,7 +16,7 @@ class SmartFeedsUpdateFeeds extends SmartFeedsUpdate {
         $feeds = array();
         foreach( $frequencies as $frequency ) {
 
-            if( $feed_id_list = $frequency->getFeedIdList() ) {
+            if( $feed_id_list = $frequency->getFeedIdListString() ) {
 
                 $feeds = $feedManager->getFeedsByIdList( $feed_id_list );
                 $feedManager->synchronize($feeds, $this->sync_type_name, $commandLine, $configurationManager, $start);
