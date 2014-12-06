@@ -1,7 +1,7 @@
 <?php
 
 /*
-@name LeedSmartFeedUpdate
+@name LeedSmartFeedsUpdate
 @author Simounet <contact@simounet.net>
 @link http://www.simounet.net
 @licence MIT
@@ -31,8 +31,8 @@ function add_synchro_option( $synchronisationType ) {
             '> '.
             '<label
                 for="synchronisationType' . $identifier .'">' .
-                '<strong>' . _t('SMARTFEEDUPDATE_SMART') . ' :</strong>' .
-            '</label> ' . _t('SMARTFEEDUPDATE_SMART_DESC') .
+                '<strong>' . _t('SMARTFEEDSUPDATE_SMART') . ' :</strong>' .
+            '</label> ' . _t('SMARTFEEDSUPDATE_SMART_DESC') .
         '</p>';
 }
 

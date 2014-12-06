@@ -18,8 +18,8 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
         }
 
         $frequencies = $this->sortFrequenciesArray( $feeds_frequencies );
-        if( ! $this->saveFrequencies( $frequencies ) ) {
-            echo _t( 'SMARTFEEDUPDATE_NO_FREQUENCIES_SAVED' );
+        if( ! $this->saveAllFrequencies( $frequencies ) ) {
+            echo _t( 'SMARTFEEDSUPDATE_NO_FREQUENCIES_SAVED' );
         }
     }
 

@@ -6,7 +6,7 @@ class SmartFeedsUpdateFeeds extends SmartFeedsUpdate {
         $frequencies = $this->getUpdateNeededFrequencies();
         if( ! $frequencies ) {
             if( ! $commandLine ) {
-                echo _t( 'SMARTFEEDUPDATE_NO_FEED_TO_UPDATE' );
+                echo _t( 'SMARTFEEDSUPDATE_NO_FEED_TO_UPDATE' );
             }
             return false;
         }
