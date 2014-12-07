@@ -11,5 +11,8 @@
  "SMARTFEEDSUPDATE_HOUR": "heure",
  "SMARTFEEDSUPDATE_HOURS": "heures",
  "SMARTFEEDSUPDATE_DAY": "jour",
- "SMARTFEEDSUPDATE_DAYS": "jours"
+ "SMARTFEEDSUPDATE_DAYS": "jours",
+ "SMARTFEEDSUPDATE_NO_FREQUENCIES_SAVED": "Aucune fréquence n'a été sauvegardée.",
+ "SMARTFEEDSUPDATE_NO_FEED_TO_UPDATE": "Aucun flux à mettre à jour.",
+ "SMARTFEEDSUPDATE_NO_ACTION_DETECTED": "Aucun action détectée."
 }
