@@ -14,7 +14,7 @@ class ExtendedFeed extends Feed {
 
         $objects = array();
         if( $results != false ) {
-            while( $item = mysql_fetch_assoc( $results ) ) {
+            while( $item = $results->fetch_assoc() ) {
                 $object = new self;
 
                 foreach( $object->getObject_fields() as $field => $type ) {

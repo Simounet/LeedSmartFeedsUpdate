@@ -40,8 +40,8 @@ class SmartFeedsUpdateFeeds extends SmartFeedsUpdate {
             'OR `nextupdate` = 0' .
             ';';
 
-        $frequencies_result = mysql_query( $get_frequencies_query );
-        while( $row = mysql_fetch_assoc( $frequencies_result ) ) {
+        $frequencies_result = $this->dbconnector->connection->query( $get_frequencies_query );
+        while( $row = $frequencies_result->fetch_assoc() ) {
 
             $frequency = new self;
             $frequency->setSlot( $row['slot'] );

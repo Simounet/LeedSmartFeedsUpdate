@@ -88,9 +88,9 @@ class SmartFeedsUpdate extends MysqlEntity {
 
         $query .= 'END;';
 
-        $result = mysql_query( $query );
+        $result = $this->dbconnector->connection->query( $query );
         if( $result === false ) {
-            throw new Exception(mysql_error());
+            throw new Exception(mysqli_error());
         }
 
         return $result;
@@ -101,9 +101,9 @@ class SmartFeedsUpdate extends MysqlEntity {
                  'SET `feeds`="' . $this->getFeeds() . '" ' .
                  'WHERE `slot`=' . $this->getSlot() . ';';
 
-        $result = mysql_query( $query );
+        $result = $this->dbconnector->connection->query( $query );
         if( $result === false ) {
-            throw new Exception(mysql_error());
+            throw new Exception(mysqli_error());
         }
 
     }
@@ -176,7 +176,7 @@ echo '<pre>' . print_r( $slot, true ) . '</pre>';
 
     public function install() {
 
-        mysql_query(
+        $this->dbconnector->connection->query(
             'CREATE TABLE IF NOT EXISTS `' . MYSQL_PREFIX . $this->TABLE_NAME . '` (
                 `slot` int(11) NOT NULL,
                 `feeds` varchar(255),
@@ -195,7 +195,7 @@ echo '<pre>' . print_r( $slot, true ) . '</pre>';
             }
         }
 
-        mysql_query('
+        $this->dbconnector->connection->query('
             INSERT INTO `' . MYSQL_PREFIX . $this->TABLE_NAME . '`
                 ( slot )
             ' . $values . '
@@ -203,7 +203,7 @@ echo '<pre>' . print_r( $slot, true ) . '</pre>';
     }
 
     public function uninstall() {
-        mysql_query( 'DROP TABLE ' . MYSQL_PREFIX . $this->TABLE_NAME );
+        $this->destroy();
     }
 
 }
