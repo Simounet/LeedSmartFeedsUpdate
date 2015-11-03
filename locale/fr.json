@@ -2,7 +2,6 @@
  "SMARTFEEDSUPDATE_SMART": "Malin",
  "SMARTFEEDSUPDATE_SMART_DESC": "La mise à jour des flux s'effectuera en fonction de la fréquence de leurs publications. Pour utiliser ce type de synchronisation, il est recommandé de lancer le cron fréquemment (toutes les 4 minutes). Et ça, c'est <a href=\"http://fr.wikipedia.org/wiki/Cyril_Lignac\">malin</a> !",
  "SMARTFEEDSUPDATE_NO_FEED_TO_UPDATE": "Aucun flux à mettre à jour.",
- "SMARTFEEDSUPDATE_NO_FREQUENCIES_SAVED": "La fréquence des flux n'a pas été sauvegardée.",
  "SMARTFEEDSUPDATE_NO_ACTION_DETECTED": "Aucune action n'a été détectée.",
  "SMARTFEEDSUPDATE_SETTINGS": "Paramètres de la mise à jour maline des flux",
  "SMARTFEEDSUPDATE_FREQUENCY_NOTIFICATION": "Le titre de chacun de ces blocs indique la fréquence à laquelle les flux en dessous seront mis à jour.",
@@ -12,7 +11,5 @@
  "SMARTFEEDSUPDATE_HOURS": "heures",
  "SMARTFEEDSUPDATE_DAY": "jour",
  "SMARTFEEDSUPDATE_DAYS": "jours",
- "SMARTFEEDSUPDATE_NO_FREQUENCIES_SAVED": "Aucune fréquence n'a été sauvegardée.",
- "SMARTFEEDSUPDATE_NO_FEED_TO_UPDATE": "Aucun flux à mettre à jour.",
- "SMARTFEEDSUPDATE_NO_ACTION_DETECTED": "Aucun action détectée."
+ "SMARTFEEDSUPDATE_NO_FREQUENCIES_SAVED": "Aucune fréquence n'a été sauvegardée."
 }
