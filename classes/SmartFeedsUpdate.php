@@ -15,7 +15,7 @@ class SmartFeedsUpdate extends MysqlEntity {
     protected $object_fields =
         array(
             'slot'       => 'key',
-            'feeds'      => 'string',
+            'feeds'      => 'longstring',
             'nextupdate' => 'integer'
         );
 
