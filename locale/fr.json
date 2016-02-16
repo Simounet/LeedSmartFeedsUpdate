@@ -11,5 +11,6 @@
  "SMARTFEEDSUPDATE_HOURS": "heures",
  "SMARTFEEDSUPDATE_DAY": "jour",
  "SMARTFEEDSUPDATE_DAYS": "jours",
- "SMARTFEEDSUPDATE_NO_FREQUENCIES_SAVED": "Aucune fréquence n'a été sauvegardée."
+ "SMARTFEEDSUPDATE_NO_FREQUENCIES_SAVED": "Aucune fréquence n'a été sauvegardée.",
+ "SMARTFEEDSUPDATE_ERROR_FEEDS_NUMBER_SAVED" : "[Erreur] Le nombre total de flux à sauvegarder ne correspond pas au nombre réel de flux dans la base."
 }

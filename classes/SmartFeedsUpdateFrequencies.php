@@ -3,12 +3,14 @@
 class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
 
     protected $events_limit = 10;
+    protected $feeds = array();
+    protected $frequencies = array();
 
     public function updateFrequencies() {
-        $feeds = $this->getAllFeeds();
+        $this->feeds = $this->getAllFeeds();
         $last_slot_id = end( $this->slots_default );
 
-        foreach( $feeds as $feed ) {
+        foreach( $this->feeds as $feed ) {
 
             $feed_frequencies = $this->getLastFrequencies( $feed );
 
@@ -20,10 +22,22 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
 
         }
 
-        $frequencies = $this->sortFrequenciesArray( $feeds_frequencies );
-        if( ! $this->saveAllFrequencies( $frequencies ) ) {
+        $this->setFrequencies( $feeds_frequencies );
+        $total_saved_eq_total_feeds = $this->isTotalSavedEqualseTotalFeedsNumber();
+        if( $total_saved_eq_total_feeds !== true ) {
+            echo _t( 'SMARTFEEDSUPDATE_ERROR_FEEDS_NUMBER_SAVED' ) . ' ' . $total_saved_eq_total_feeds;
+        } elseif( ! $this->saveAllFrequencies( $this->frequencies ) ) {
             echo _t( 'SMARTFEEDSUPDATE_NO_FREQUENCIES_SAVED' );
         }
+    }
+
+    protected function isTotalSavedEqualseTotalFeedsNumber() {
+        $feeds_total_count = count( $this->feeds );
+        $smart_feeds_to_save_count = count( $this->frequencies, COUNT_RECURSIVE ) - count( $this->frequencies );
+        return $feeds_total_count === $smart_feeds_to_save_count ?
+            true
+            :
+            "db: $feeds_total_count - smart: $smart_feeds_to_save_count";
     }
 
     protected function getLastFrequencies( Feed $feed ) {
@@ -42,7 +56,7 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
     }
 
 
-    protected function sortFrequenciesArray( $feeds_frequencies ) {
+    protected function setFrequencies( $feeds_frequencies ) {
         asort( $feeds_frequencies );
 
         // Loop on each feed
@@ -59,16 +73,13 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
                     )
                     || $slot_i === $slots_last_i
                 ) {
-                    $frequencies[$slot_limit][] = $feed_id;
+                    $this->frequencies[$slot_limit][] = $feed_id;
                     break;
                 }
 
             }
 
         }
-
-        return $frequencies;
-
     }
 
     /**

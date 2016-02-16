@@ -14,5 +14,6 @@
  "SMARTFEEDSUPDATE_DAYS": "days",
  "SMARTFEEDSUPDATE_NO_FREQUENCIES_SAVED": "No frequencies saved.",
  "SMARTFEEDSUPDATE_NO_FEED_TO_UPDATE": "No feed to update.",
- "SMARTFEEDSUPDATE_NO_ACTION_DETECTED": "No action detected."
+ "SMARTFEEDSUPDATE_NO_ACTION_DETECTED": "No action detected.",
+ "SMARTFEEDSUPDATE_ERROR_FEEDS_NUMBER_SAVED" : "[Error] The number of feeds to save doesn't correspond to the real total feeds count in the database."
 }
