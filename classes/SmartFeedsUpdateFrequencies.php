@@ -6,6 +6,7 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
 
     public function updateFrequencies() {
         $feeds = $this->getAllFeeds();
+        $last_slot_id = end( $this->slots_default );
 
         foreach( $feeds as $feed ) {
 
@@ -13,6 +14,8 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
 
             if( $feed_frequencies ) {
                 $feeds_frequencies[$feed->getId()] = $this->eventsIntervalAverage( $feed_frequencies );
+            } else {
+                $feeds_frequencies[$feed->getId()] = $last_slot_id;
             }
 
         }
@@ -45,11 +48,17 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
         // Loop on each feed
         foreach( $feeds_frequencies as $feed_id => $feed_frequency ) {
 
+            $slots_last_i = count( $this->slots_default ) - 1;
             // Check for each slot
-            foreach( $this->slots_default as $slot_limit ) {
+            foreach( $this->slots_default as $slot_i => $slot_limit ) {
 
-                if( $feed_frequency != 0
-                AND $feed_frequency <=  $slot_limit ) {
+                if(
+                    (
+                        $feed_frequency != 0
+                        && $feed_frequency <=  $slot_limit
+                    )
+                    || $slot_i === $slots_last_i
+                ) {
                     $frequencies[$slot_limit][] = $feed_id;
                     break;
                 }
