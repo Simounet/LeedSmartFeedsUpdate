@@ -7,6 +7,7 @@ class SmartFeedsUpdate extends MysqlEntity {
     protected $TABLE_NAME = 'plugin_smartfeedsupdate';
     protected $CLASS_NAME = 'SmartFeedsUpdate';
     public $slots_default = array( 5, 10, 20, 30, 60, 120, 480, 1440 );
+    protected $frequencies = array();
 
     protected
         $slot,
@@ -69,15 +70,15 @@ class SmartFeedsUpdate extends MysqlEntity {
         return json_decode( $this->getFeeds() );
     }
 
-    protected function saveAllFrequencies( $frequencies ) {
+    protected function saveAllFrequencies() {
 
         $query = 'UPDATE ' . MYSQL_PREFIX . $this->TABLE_NAME
                 . ' SET `feeds`= CASE `slot` ';
 
         foreach( $this->slots_default as $slot_nb ) {
             $values =
-                isset( $frequencies[$slot_nb] ) ?
-                $frequencies[$slot_nb]
+                isset( $this->frequencies[$slot_nb] ) ?
+                $this->frequencies[$slot_nb]
                 :
                 array();
 
@@ -117,11 +118,10 @@ class SmartFeedsUpdate extends MysqlEntity {
     public function updateFeed( $feed_id, $previous_slot, $new_slot ) {
         $feed_id = (int)$feed_id;
         $slot = $this->load( array( 'slot' => $previous_slot ) );
-        $slot->removeFeedToSlot( $feed_id );
+        $slot->removeFeedFromSlot( $feed_id );
 
         $slot = $this->load( array( 'slot' => $new_slot ) );
         $slot->addFeedToSlot( $feed_id );
-echo '<pre>' . print_r( $slot, true ) . '</pre>';
     }
 
     protected function addFeedToSlot( $feed_id ) {
@@ -135,7 +135,7 @@ echo '<pre>' . print_r( $slot, true ) . '</pre>';
         $this->saveFrequency();
     }
 
-    protected function removeFeedToSlot( $feed_id ) {
+    protected function removeFeedFromSlot( $feed_id ) {
         $feeds_ids = array();
         $feeds_ids = $this->getFeedIdArray();
 

@@ -2,31 +2,17 @@
 
 class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
 
-    protected $events_limit = 10;
+    const EVENTS_LIMIT = 10;
     protected $feeds = array();
-    protected $frequencies = array();
+    protected $feeds_frequency = array();
 
     public function updateFrequencies() {
         $this->feeds = $this->getAllFeeds();
-        $last_slot_id = end( $this->slots_default );
-
-        foreach( $this->feeds as $feed ) {
-
-            $feed_frequencies = $this->getLastFrequencies( $feed );
-
-            if( $feed_frequencies ) {
-                $feeds_frequencies[$feed->getId()] = $this->eventsIntervalAverage( $feed_frequencies );
-            } else {
-                $feeds_frequencies[$feed->getId()] = $last_slot_id;
-            }
-
-        }
-
-        $this->setFrequencies( $feeds_frequencies );
+        $this->setFrequencies();
         $total_saved_eq_total_feeds = $this->isTotalSavedEqualseTotalFeedsNumber();
         if( $total_saved_eq_total_feeds !== true ) {
             echo _t( 'SMARTFEEDSUPDATE_ERROR_FEEDS_NUMBER_SAVED' ) . ' ' . $total_saved_eq_total_feeds;
-        } elseif( ! $this->saveAllFrequencies( $this->frequencies ) ) {
+        } elseif( ! $this->saveAllFrequencies() ) {
             echo _t( 'SMARTFEEDSUPDATE_NO_FREQUENCIES_SAVED' );
         }
     }
@@ -40,10 +26,10 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
             "db: $feeds_total_count - smart: $smart_feeds_to_save_count";
     }
 
-    protected function getLastFrequencies( Feed $feed ) {
-        $events = $feed->getEvents( 0, $this->events_limit, 'pubdate DESC', 'pubdate' );
+    protected function getFeedLastPubdates( Feed $feed ) {
+        $events = $feed->getEvents( 0, self::EVENTS_LIMIT, 'pubdate DESC', 'pubdate' );
 
-        if( $this->events_limit <= count( $events ) ) {
+        if( self::EVENTS_LIMIT <= count( $events ) ) {
             $dates = array();
             foreach( $events as $event ) {
                 $dates[] = $event->getPubdate();
@@ -55,12 +41,22 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
         return false;
     }
 
+    protected function setFeedsFrequency( $feeds ) {
+        foreach( $feeds as $feed ) {
+            if( $feed_last_pubdates = $this->getFeedLastPubdates( $feed ) ) {
+                $this->feeds_frequency[$feed->getId()] = $this->getPubdatesAverage( $feed_last_pubdates );
+            } else {
+                $this->feeds_frequency[$feed->getId()] = end( $this->slots_default );
+            }
+        }
+    }
 
-    protected function setFrequencies( $feeds_frequencies ) {
-        asort( $feeds_frequencies );
+    protected function setFrequencies() {
+        $this->setFeedsFrequency( $this->feeds );
+        asort( $this->feeds_frequency );
 
         // Loop on each feed
-        foreach( $feeds_frequencies as $feed_id => $feed_frequency ) {
+        foreach( $this->feeds_frequency as $feed_id => $feed_frequency ) {
 
             $slots_last_i = count( $this->slots_default ) - 1;
             // Check for each slot
@@ -86,7 +82,7 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
      * Tools
      */
 
-    protected function eventsIntervalAverage( array $dates ){
+    protected function getPubdatesAverage( array $dates ){
         $intervals = array();
 
         foreach( $dates as $key => $date ) {
