@@ -70,21 +70,24 @@ function setSmartFeedsUpdateSettingsBlock( &$my_user, &$feeds ) {
         // [facto] - Not very efficient...
         // I have to build a request with feeds' names and id
         // Then merge infos avoiding me the feeds foreachs
-        foreach( $slot->getFeedIdArray() as $id ) {
-            foreach( $feeds as $feed ) {
-                $feed_id = $feed->getId();
-                if( $id == $feed_id ) {
-                    echo '<li>';
-                    echo '<span class="feedTitle">' . Functions::truncate( $feed->getName(), 30 ) . '</span>';
-                    echo '<select class="js-smart-feeds-update-select" name="smartupdates" data-feed-id="' . $feed_id . '">';
+        $feed_id_array = $slot->getFeedIdArray();
+        if( is_array( $feed_id_array ) ) {
+            foreach( $feed_id_array as $id ) {
+                foreach( $feeds as $feed ) {
+                    $feed_id = $feed->getId();
+                    if( $id == $feed_id ) {
+                        echo '<li>';
+                        echo '<span class="feedTitle">' . Functions::truncate( $feed->getName(), 30 ) . '</span>';
+                        echo '<select class="js-smart-feeds-update-select" name="smartupdates" data-feed-id="' . $feed_id . '">';
 
-                    foreach( $update_feeds->slots_default as $slot ) {
-                        $slot_nice = $update_feeds->getNiceSlotIdString( $slot );
-                        $selected = $slot == $slot_id ? ' selected' : false;
-                        echo '<option value="' . $slot . '"' . $selected . '>' . $slot_nice . '</option>';
+                        foreach( $update_feeds->slots_default as $slot ) {
+                            $slot_nice = $update_feeds->getNiceSlotIdString( $slot );
+                            $selected = $slot == $slot_id ? ' selected' : false;
+                            echo '<option value="' . $slot . '"' . $selected . '>' . $slot_nice . '</option>';
+                        }
+                        echo '</select>';
+                        echo '</li>';
                     }
-                    echo '</select>';
-                    echo '</li>';
                 }
             }
         }
