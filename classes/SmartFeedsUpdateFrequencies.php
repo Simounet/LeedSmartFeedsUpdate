@@ -17,6 +17,25 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
         }
     }
 
+    public function addFeedFrequency( $feed ) {
+        $this->feeds = array( $feed );
+        $this->setFrequencies();
+        $slot_id = key( $this->frequencies );
+        $slot = $this->load( array( 'slot' => $slot_id ) );
+        $slot->addFeedToSlot( reset( $this->frequencies[$slot_id] ) );
+    }
+
+    public function removeFeedFrequency( $feed_id ) {
+        $smart = new SmartFeedsUpdate();
+        $slots = $smart->populate();
+        foreach( $slots as $slot_i => $slot ) {
+            if( in_array( $feed_id, $slot->getFeedIdArray() ) ) {
+                break;
+            }
+        }
+        $slots[$slot_i]->removeFeedFromSlot( $feed_id );
+    }
+
     protected function isTotalSavedEqualseTotalFeedsNumber() {
         $feeds_total_count = count( $this->feeds );
         $smart_feeds_to_save_count = count( $this->frequencies, COUNT_RECURSIVE ) - count( $this->frequencies );

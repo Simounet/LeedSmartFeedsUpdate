@@ -115,10 +115,24 @@ function setSmartFeedsUpdateFeedSlot( &$_, $myUser ) {
     die;
 }
 
+function smartFeedsUpdateAddFeed( &$newFeed ) {
+    require_once( __DIR__ . "/classes/SmartFeedsUpdateFrequencies.php" );
+    $smart_update = new SmartFeedsUpdateFrequencies();
+    $smart_update->addFeedFrequency( $newFeed );
+}
+
+function smartFeedsUpdateRemoveFeed( $feedId ) {
+    require_once( __DIR__ . "/classes/SmartFeedsUpdateFrequencies.php" );
+    $smart_update = new SmartFeedsUpdateFrequencies();
+    $smart_update->removeFeedFrequency( $feedId );
+}
+
 Plugin::addHook( "setting_post_synchronisation_options", "add_synchro_option" );
 Plugin::addHook( "action_before_synchronisationtype", "get_feeds" );
 Plugin::addHook( "setting_post_link", "setSmartFeedsUpdateSettingsLink" );
 Plugin::addHook( "setting_post_section", "setSmartFeedsUpdateSettingsBlock" );
 Plugin::addHook( "action_post_case", "setSmartFeedsUpdateFeedSlot" );
+Plugin::addHook( "action_after_addFeed", "smartFeedsUpdateAddFeed" );
+Plugin::addHook( "action_after_removeFeed", "smartFeedsUpdateRemoveFeed" );
 
 ?>
