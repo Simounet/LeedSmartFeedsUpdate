@@ -200,10 +200,16 @@ class SmartFeedsUpdate extends MysqlEntity {
                 ( slot )
             ' . $values . '
         ;');
+
+        $configurationManager = new Configuration();
+        $configurationManager->put( 'synchronisationType', self::SYNC_TYPE_NAME );
     }
 
     public function uninstall() {
         $this->destroy();
+
+        $configurationManager = new Configuration();
+        $configurationManager->put( 'synchronisationType', 'auto' );
     }
 
 }
