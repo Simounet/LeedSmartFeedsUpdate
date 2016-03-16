@@ -12,8 +12,7 @@
 require_once( __DIR__ . "/classes/SmartFeedsUpdate.php" );
 
 function add_synchro_option( $synchronisationType ) {
-    $update = new SmartFeedsUpdate();
-    $identifier = $update->sync_type_name;
+    $identifier = SmartFeedsUpdate::SYNC_TYPE_NAME;
 
     $checked = false;
     if( $synchronisationType == $identifier ) {
@@ -40,7 +39,7 @@ function get_feeds( &$synchronisation_custom, &$synchronisationType, &$commandLi
     require_once( __DIR__ . "/classes/SmartFeedsUpdateFeeds.php" );
     $update_feeds = new SmartFeedsUpdateFeeds();
 
-    if( $synchronisationType == $update_feeds->sync_type_name ) {
+    if( $synchronisationType == $update_feeds::SYNC_TYPE_NAME ) {
         $synchronisation_custom['no_normal_synchronize'] = true;
 
         require_once( __DIR__ . "/classes/ExtendedFeed.php" );

@@ -2,7 +2,7 @@
 
 class SmartFeedsUpdate extends MysqlEntity {
 
-    public $sync_type_name = 'smartfeedsupdate';
+    const SYNC_TYPE_NAME = 'smartfeedsupdate';
 
     protected $TABLE_NAME = 'plugin_smartfeedsupdate';
     protected $CLASS_NAME = 'SmartFeedsUpdate';

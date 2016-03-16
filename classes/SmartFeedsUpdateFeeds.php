@@ -19,7 +19,7 @@ class SmartFeedsUpdateFeeds extends SmartFeedsUpdate {
             if( $feed_id_list = $frequency->getFeedIdListString() ) {
 
                 $feeds = $feedManager->getFeedsByIdList( $feed_id_list );
-                $feedManager->synchronize($feeds, $this->sync_type_name, $commandLine, $configurationManager, $start);
+                $feedManager->synchronize($feeds, self::SYNC_TYPE_NAME, $commandLine, $configurationManager, $start);
 
             }
 
