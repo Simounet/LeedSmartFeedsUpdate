@@ -16,7 +16,7 @@ Leed Smart Feeds Update get the frequencies' average of the last 10 feed's entri
 ## Install
 
 1. Do at least one first sync with the Leed original update system!
-2. Download [LeedSmartFeedsUpdate](archive/master.zip) into the `plugins` folder of Leed
+2. Download [LeedSmartFeedsUpdate](https://github.com/Simounet/LeedSmartFeedsUpdate/archive/dev.zip) into the `plugins` folder of Leed
 3. Activate `LeedSmartFeedsUpdate` from the settings page
 4. Change the Leed's crontab entry to do the update every minute
 `* * * * * cd /var/www/leed && php action.php >> logs/cron.log 2>&1`
