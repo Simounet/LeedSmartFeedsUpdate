@@ -64,7 +64,7 @@ function setSmartFeedsUpdateSettingsBlock( &$my_user, &$feeds ) {
         $slot_id = $slot->getSlot();
         $slot_id_nice = $update_feeds->getNiceSlotIdString( $slot_id );
         echo '<section class="addBloc">';
-        echo '<h3>' . $slot_id_nice . '</h3>';
+        echo '<h3>' . $slot_id_nice . ' (' . date('H:i m/d/Y', $slot->getNextUpdate()) . ')</h3>';
         echo '<ul class="nochip">';
         // [facto] - Not very efficient...
         // I have to build a request with feeds' names and id
