@@ -46,7 +46,7 @@ class SmartFeedsUpdateFrequencies extends SmartFeedsUpdate {
     }
 
     protected function getFeedLastPubdates( Feed $feed ) {
-        $events = $feed->getEvents( 0, self::EVENTS_LIMIT, 'pubdate DESC', 'pubdate' );
+        $events = $feed->getEvents( 'pubdate DESC', 0, self::EVENTS_LIMIT, 'pubdate' );
 
         if( self::EVENTS_LIMIT <= count( $events ) ) {
             $dates = array();
