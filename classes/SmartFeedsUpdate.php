@@ -203,6 +203,9 @@ class SmartFeedsUpdate extends MysqlEntity {
 
         $configurationManager = new Configuration();
         $configurationManager->put( 'synchronisationType', self::SYNC_TYPE_NAME );
+        require_once( __DIR__ . "/SmartFeedsUpdateFrequencies.php" );
+        $smart_update = new SmartFeedsUpdateFrequencies();
+        $smart_update->updateFrequencies();
     }
 
     public function uninstall() {
